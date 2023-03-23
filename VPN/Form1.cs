@@ -7,49 +7,46 @@ namespace VPN
 {
     public partial class Form1 : Form
     {
-        private int proto;
         public Form1()
         {
             InitializeComponent();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void Connect_Click(object sender, EventArgs e)
         {
             if (comboBox1.Text == "Singapore") 
             {
-                if (radioButton1.Checked)
+                if (radioButton1.Checked) //UDP
                 {
-                    proto = 0;
+                    //Init new process
                     Process process = new Process();
                     ProcessStartInfo startInfo = new ProcessStartInfo();
+
+                    //Declare process start information
                     startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                     startInfo.FileName = @"S:\Program Files\OpenVPN\bin\openvpn.exe";
                     startInfo.Arguments = "--config sgudp.ovpn";
                     startInfo.Verb = "runas";
                     process.StartInfo = startInfo;
+
+                    //Start process
                     process.Start();
                     MessageBox.Show("You've connected to server with udp.");
                 }
-                else if (radioButton2.Checked)
+                else if (radioButton2.Checked) //TCP
                 {
-                    proto = 1;
+                    //Init new process
                     Process process = new Process();
                     ProcessStartInfo startInfo = new ProcessStartInfo();
+
+                    //Declare process start information
                     startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                     startInfo.FileName = @"S:\Program Files\OpenVPN\bin\openvpn.exe";
-                    startInfo.Arguments = "--config sgtcp.ovpn";
+                    startInfo.Arguments = "--config sgudp.ovpn";
                     startInfo.Verb = "runas";
                     process.StartInfo = startInfo;
+
+                    //Start process
                     process.Start();
                     MessageBox.Show("You've connected to server with tcp.");
                 }
@@ -64,6 +61,7 @@ namespace VPN
 
         private void disconnect()
         {
+            //Kill the opened process
             Process.Start(new ProcessStartInfo
             {
                 FileName = "taskkill",
